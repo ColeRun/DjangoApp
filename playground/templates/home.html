@@ -1,5 +1,12 @@
 {% extends "base.html" %} {%block title %} Home Page {%endblock%}
     
  {%block content %} <p> this is gt home page </p> 
+ <button id="mybutton"> Click me </button>
  {%endblock%}
+ <script>
+    document.getElementById('mybutton').addEventListener('click', function() {
+      document.title = 'Hello World';
+      alert('Hello World');
+    });
+  </script>
  
