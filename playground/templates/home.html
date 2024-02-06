@@ -3,7 +3,18 @@
  {%block content %} <p> this is gt home page </p> 
   <p> this is gt home page </p>
 <button id="mybutton">Click me please</button>
+
+
+
+<form id="myform">
+  <input type="text" id="mytext" value="Hello">
+  <input type="submit">
+  
 <script>
+document.getElementById("myform").addEventListener("submit", function(){
+  var x = document.getElementById("mytext").value;
+  alert(x);
+});
 document.getElementById("mybutton").addEventListener("click", function(){
   alert("Hello World");
 });
