@@ -1,0 +1,44 @@
+<!-- survey_form.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Survey Form</title>
+</head>
+<body>
+    <h1>Survey Form</h1>
+
+    <form method="post" action="{% url 'submit_survey' %}">
+        {% csrf_token %}
+
+        <!-- Question 1 -->
+        <label for="q1">Question 1: What is your favorite color?</label>
+        <select id="q1" name="q1" required>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="other">Other</option>
+        </select>
+
+        <!-- Question 2 -->
+        <label for="q2">Question 2: How satisfied are you with our service?</label>
+        <input type="radio" id="q2_very_satisfied" name="q2" value="very_satisfied" required>
+        <label for="q2_very_satisfied">Very Satisfied</label>
+        <input type="radio" id="q2_satisfied" name="q2" value="satisfied" required>
+        <label for="q2_satisfied">Satisfied</label>
+        <input type="radio" id="q2_neutral" name="q2" value="neutral" required>
+        <label for="q2_neutral">Neutral</label>
+        <input type="radio" id="q2_dissatisfied" name="q2" value="dissatisfied" required>
+        <label for="q2_dissatisfied">Dissatisfied</label>
+        <input type="radio" id="q2_very_dissatisfied" name="q2" value="very_dissatisfied" required>
+        <label for="q2_very_dissatisfied">Very Dissatisfied</label>
+
+        <!-- Question 3 - Open-ended -->
+        <label for="q3">Question 3: Any additional comments or feedback?</label>
+        <textarea id="q3" name="q3" rows="4" cols="50"></textarea>
+
+        <!-- Submit button -->
+        <button type="submit">Submit Survey</button>
+    </form>
+</body>
+</html>
