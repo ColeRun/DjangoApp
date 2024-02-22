@@ -1,0 +1,18 @@
+create html script that will be used to prompt the user to login. 
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+</html>
