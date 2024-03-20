@@ -6,8 +6,5 @@ class Organization(models.Model):
     organization_description = models.CharField(max_length=1000)
     organization_email = models.EmailField(max_length=100)
 
-class User(models.Model):
-    user_email = models.EmailField(max_length=100)
-    surveys_completed = models.IntegerField()
-    fav_color = models.CharField(max_length=100)
+
     
