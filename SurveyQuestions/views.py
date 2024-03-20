@@ -4,3 +4,6 @@ from django.shortcuts import render
 #call survey template one
 def index(request):
     return render(request, 'home1.html')
+
+def createsurvey(request):
+    return render(request, 'create_survey.html')
