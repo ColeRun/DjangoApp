@@ -9,6 +9,7 @@
             <select name="questionTypes" onchange="addOptions(this)">
                 <option value="text">Text</option>
                 <option value="multiple_choice">Multiple Choice</option>
+                <option value="all_that_apply">All that apply</option>
                 <!--add any other options here-->
             </select>
             <div class="options"></div>
@@ -19,15 +20,14 @@
 </form>
 
 <script>
-<!--this makes sure new questions are detected by addOptions-->
 document.getElementById('questions').addEventListener('change', function(event) {
     if (event.target.name === 'questionTypes') {
         addOptions(event.target);
     }
 });
-<!--this function adds new questions to the form-->
 
-document.getElementById('addQuestion').addEventListener('click', function() {
+document.getElementById('addQuestion').addEventListener('click', function(event) {
+    event.preventDefault();
     var questionsDiv = document.getElementById('questions');
     var questionCount = questionsDiv.getElementsByClassName('question').length;
     var newDiv = document.createElement('div');
@@ -35,6 +35,7 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     var newLabel = document.createElement('label');
     newLabel.setAttribute('for', 'question' + (questionCount + 1));
     newLabel.textContent = 'Question ' + (questionCount + 1) + ':';
+    newLabel.setAttribute('onclick', 'editLabel(this)');
     var newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
     newInput.setAttribute('id', 'question' + (questionCount + 1));
@@ -48,8 +49,12 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     var option2 = document.createElement('option');
     option2.setAttribute('value', 'multiple_choice');
     option2.textContent = 'Multiple Choice';
+    var option3 = document.createElement('option');
+    option3.setAttribute('value', 'all_that_apply');
+    option3.textContent = 'All that apply';
     newSelect.appendChild(option1);
     newSelect.appendChild(option2);
+    newSelect.appendChild(option3);
     var newOptionsDiv = document.createElement('div');
     newOptionsDiv.setAttribute('class', 'options');
     newDiv.appendChild(newLabel);
@@ -58,20 +63,48 @@ document.getElementById('addQuestion').addEventListener('click', function() {
     newDiv.appendChild(newOptionsDiv);
     questionsDiv.appendChild(newDiv);
 });
-<!--this function adds the options for multiple choice questions-->
+
 function addOptions(select) {
     var optionsDiv = select.parentNode.getElementsByClassName('options')[0];
     optionsDiv.innerHTML = '';
     if (select.value == 'multiple_choice') {
-        for (var i = 1; i <= 4; i++) {
-            var newLabel = document.createElement('label');
-            newLabel.textContent = 'Option ' + i + ':';
-            var newInput = document.createElement('input');
-            newInput.setAttribute('type', 'radio');
-            newInput.setAttribute('name', 'options');
-            optionsDiv.appendChild(newLabel);
-            optionsDiv.appendChild(newInput);
-        }
+        // existing code for multiple_choice
+    } else if (select.value == 'all_that_apply') {
+        allThatApply(optionsDiv);
+    }
+}
+
+function allThatApply(optionsDiv) {
+    for (var i = 1; i <= 4; i++) {
+        var newLabel = document.createElement('label');
+        newLabel.textContent = 'Option ' + i + ':';
+        newLabel.setAttribute('onclick', 'editLabel(this)');
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'checkbox');
+        newInput.setAttribute('name', 'options');
+        optionsDiv.appendChild(newLabel);
+        optionsDiv.appendChild(newInput);
+    }
+    var addButton = document.createElement('button');
+    addButton.textContent = 'Add Option';
+    addButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        var newLabel = document.createElement('label');
+        newLabel.textContent = 'Option ' + (optionsDiv.getElementsByTagName('input').length + 1) + ':';
+        newLabel.setAttribute('onclick', 'editLabel(this)');
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'checkbox');
+        newInput.setAttribute('name', 'options');
+        optionsDiv.appendChild(newLabel);
+        optionsDiv.appendChild(newInput);
+    });
+    optionsDiv.appendChild(addButton);
+}
+
+function editLabel(label) {
+    var newText = prompt('Enter new text for the label:');
+    if (newText) {
+        label.textContent = newText;
     }
 }
 </script>
