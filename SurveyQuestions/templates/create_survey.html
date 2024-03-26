@@ -1,3 +1,16 @@
+<style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            color: #666;
+        }
+       
+    </style>
 <form id="surveyForm" method="post">
     {% csrf_token %}
     <label for="title">Title:</label>
@@ -10,7 +23,6 @@
                 <option value="text">Text</option>
                 <option value="multiple_choice">Multiple Choice</option>
                 <option value="all_that_apply">All that apply</option>
-                <!--add any other options here-->
             </select>
             <div class="options"></div>
         </div> 
@@ -68,7 +80,16 @@ function addOptions(select) {
     var optionsDiv = select.parentNode.getElementsByClassName('options')[0];
     optionsDiv.innerHTML = '';
     if (select.value == 'multiple_choice') {
-        // existing code for multiple_choice
+        for (var i = 1; i <= 4; i++) {
+            var newLabel = document.createElement('label');
+            newLabel.textContent = 'Option ' + i + ':';
+            newLabel.setAttribute('onclick', 'editLabel(this)');
+            var newInput = document.createElement('input');
+            newInput.setAttribute('type', 'radio');
+            newInput.setAttribute('name', 'options');
+            optionsDiv.appendChild(newLabel);
+            optionsDiv.appendChild(newInput);
+        }
     } else if (select.value == 'all_that_apply') {
         allThatApply(optionsDiv);
     }

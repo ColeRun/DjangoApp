@@ -19,3 +19,9 @@ def createsurvey(request):
         return render(request, 'survey_created.html')
     else:
         return render(request, 'create_survey.html')
+    
+
+def survey_detail(request, pk):
+    survey = Survey.objects.get(pk=pk)
+    questions = Question.objects.filter(survey=survey)
+    return render(request, 'survey_detail.html', {'survey': survey, 'questions': questions})
