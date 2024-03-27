@@ -20,8 +20,8 @@ def createsurvey(request):
                 answer.save()
                 print("answer created")
         return survey_detail(request, survey.pk)
-    else:
-        return render(request, 'create_survey.html')
+    #i took out the else
+    return render(request, 'create_survey.html')
 
 
 def survey_detail(request, pk):
@@ -32,4 +32,3 @@ def survey_detail(request, pk):
     except Survey.DoesNotExist:
         return render(request, 'survey_not_found.html')
     
-    #recreate create survey template to be able to take variables "questions", "answers" and "survey" if user clicks edit survey.

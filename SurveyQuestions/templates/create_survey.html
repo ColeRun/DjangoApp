@@ -47,32 +47,12 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     var newLabel = document.createElement('label');
     newLabel.setAttribute('for', 'question' + (questionCount + 1));
     newLabel.textContent = 'Question ' + (questionCount + 1) + ':';
-    newLabel.setAttribute('onclick', 'editLabel(this)');
     var newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
     newInput.setAttribute('id', 'question' + (questionCount + 1));
     newInput.setAttribute('name', 'questions');
-    var newSelect = document.createElement('select');
-    newSelect.setAttribute('name', 'questionTypes');
-    newSelect.setAttribute('onchange', 'addOptions(this)');
-    var option1 = document.createElement('option');
-    option1.setAttribute('value', 'text');
-    option1.textContent = 'Text';
-    var option2 = document.createElement('option');
-    option2.setAttribute('value', 'multiple_choice');
-    option2.textContent = 'Multiple Choice';
-    var option3 = document.createElement('option');
-    option3.setAttribute('value', 'all_that_apply');
-    option3.textContent = 'All that apply';
-    newSelect.appendChild(option1);
-    newSelect.appendChild(option2);
-    newSelect.appendChild(option3);
-    var newOptionsDiv = document.createElement('div');
-    newOptionsDiv.setAttribute('class', 'options');
     newDiv.appendChild(newLabel);
     newDiv.appendChild(newInput);
-    newDiv.appendChild(newSelect);
-    newDiv.appendChild(newOptionsDiv);
     questionsDiv.appendChild(newDiv);
 });
 
@@ -89,6 +69,33 @@ function addOptions(select) {
             newInput.setAttribute('name', 'options');
             optionsDiv.appendChild(newLabel);
             optionsDiv.appendChild(newInput);
+        }
+        var addButton = document.createElement('button');
+        addButton.textContent = 'Add Option';
+        addButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        var newLabel = document.createElement('label');
+        newLabel.textContent = 'Option ' + (optionsDiv.getElementsByTagName('input').length + 1) + ':';
+        newLabel.setAttribute('onclick', 'editLabel(this)');
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'checkbox');
+        newInput.setAttribute('name', 'options');
+        optionsDiv.appendChild(newLabel);
+        optionsDiv.appendChild(newInput);
+    });
+    optionsDiv.appendChild(addButton);
+
+    var removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove Option';
+    removeButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        var inputs = optionsDiv.getElementsByTagName('input');
+        if (inputs.length > 0) {
+            optionsDiv.removeChild(inputs[inputs.length - 1]);
+            optionsDiv.removeChild(optionsDiv.lastChild);  // Remove corresponding label
+        }
+    });
+    optionsDiv.appendChild(removeButton);
         }
     } else if (select.value == 'all_that_apply') {
         allThatApply(optionsDiv);
@@ -120,6 +127,19 @@ function allThatApply(optionsDiv) {
         optionsDiv.appendChild(newInput);
     });
     optionsDiv.appendChild(addButton);
+
+    var removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove Option';
+    removeButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        var inputs = optionsDiv.getElementsByTagName('input');
+        if (inputs.length > 0) {
+            optionsDiv.removeChild(inputs[inputs.length - 1]);
+            optionsDiv.removeChild(optionsDiv.lastChild);  // Remove corresponding label
+        }
+    });
+    optionsDiv.appendChild(removeButton);
+    });
 }
 
 function editLabel(label) {
