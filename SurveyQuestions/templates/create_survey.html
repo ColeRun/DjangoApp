@@ -24,7 +24,8 @@
                 <option value="multiple_choice">Multiple Choice</option>
                 <option value="all_that_apply">All that apply</option>
             </select>
-            <div class="options"></div>
+            <div class="options">
+            </div>
         </div> 
     </div>
     <button type="button" id="addQuestion">Add Question</button>
@@ -53,6 +54,27 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     newInput.setAttribute('name', 'questions');
     newDiv.appendChild(newLabel);
     newDiv.appendChild(newInput);
+    questionsDiv.appendChild(newDiv);
+     var newSelect = document.createElement('select');
+    newSelect.setAttribute('name', 'questionTypes');
+    newSelect.setAttribute('onchange', 'addOptions(this)');
+    var option1 = document.createElement('option');
+    option1.setAttribute('value', 'text');
+    option1.textContent = 'Text';
+    var option2 = document.createElement('option');
+    option2.setAttribute('value', 'multiple_choice');
+    option2.textContent = 'Multiple Choice';
+    var option3 = document.createElement('option');
+    option3.setAttribute('value', 'all_that_apply');
+    option3.textContent = 'All that apply';
+    newSelect.appendChild(option1);
+    newSelect.appendChild(option2);
+    newSelect.appendChild(option3);
+    newDiv.appendChild(newSelect);
+     var newOptionsDiv = document.createElement('div');
+    newOptionsDiv.setAttribute('class', 'options');
+    newDiv.appendChild(newOptionsDiv);
+
     questionsDiv.appendChild(newDiv);
 });
 
@@ -89,58 +111,68 @@ function addOptions(select) {
     removeButton.textContent = 'Remove Option';
     removeButton.addEventListener('click', function(event) {
         event.preventDefault();
-        var inputs = optionsDiv.getElementsByTagName('input');
-        if (inputs.length > 0) {
-            optionsDiv.removeChild(inputs[inputs.length - 1]);
-            optionsDiv.removeChild(optionsDiv.lastChild);  // Remove corresponding label
-        }
+    var inputs = optionsDiv.getElementsByTagName('input');
+    if (inputs.length > 0) {
+        optionsDiv.removeChild(inputs[inputs.length - 1].previousSibling);  
+        optionsDiv.removeChild(inputs[inputs.length - 1]);  
+    }
     });
     optionsDiv.appendChild(removeButton);
         }
-    } else if (select.value == 'all_that_apply') {
+    else if (select.value == 'all_that_apply') {
         allThatApply(optionsDiv);
     }
 }
 
+
+
+
 function allThatApply(optionsDiv) {
     for (var i = 1; i <= 4; i++) {
+        var optionDiv = document.createElement('div');
         var newLabel = document.createElement('label');
         newLabel.textContent = 'Option ' + i + ':';
         newLabel.setAttribute('onclick', 'editLabel(this)');
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'checkbox');
         newInput.setAttribute('name', 'options');
-        optionsDiv.appendChild(newLabel);
-        optionsDiv.appendChild(newInput);
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove Option';
+        removeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            optionsDiv.removeChild(optionDiv);
+        });
+        optionDiv.appendChild(newLabel);
+        optionDiv.appendChild(newInput);
+        optionDiv.appendChild(removeButton);
+        optionsDiv.appendChild(optionDiv);
     }
     var addButton = document.createElement('button');
     addButton.textContent = 'Add Option';
     addButton.addEventListener('click', function(event) {
         event.preventDefault();
+        var optionDiv = document.createElement('div');
         var newLabel = document.createElement('label');
         newLabel.textContent = 'Option ' + (optionsDiv.getElementsByTagName('input').length + 1) + ':';
         newLabel.setAttribute('onclick', 'editLabel(this)');
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'checkbox');
         newInput.setAttribute('name', 'options');
-        optionsDiv.appendChild(newLabel);
-        optionsDiv.appendChild(newInput);
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove Option';
+        removeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            optionsDiv.removeChild(optionDiv);
+        });
+        optionDiv.appendChild(newLabel);
+        optionDiv.appendChild(newInput);
+        optionDiv.appendChild(removeButton);
+        optionsDiv.appendChild(optionDiv);
     });
     optionsDiv.appendChild(addButton);
-
-    var removeButton = document.createElement('button');
-    removeButton.textContent = 'Remove Option';
-    removeButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        var inputs = optionsDiv.getElementsByTagName('input');
-        if (inputs.length > 0) {
-            optionsDiv.removeChild(inputs[inputs.length - 1]);
-            optionsDiv.removeChild(optionsDiv.lastChild);  // Remove corresponding label
-        }
-    });
-    optionsDiv.appendChild(removeButton);
-    });
 }
+
+
 
 function editLabel(label) {
     var newText = prompt('Enter new text for the label:');
