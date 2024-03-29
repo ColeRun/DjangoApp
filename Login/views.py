@@ -15,17 +15,21 @@ import django.contrib.auth.models
 
  #create logic that if register is clicked it will redirect to register page
 
-def login(request):
+def login_view(request):
     #we need to use something like post.contain because the whole post is a lot more than just the username and password
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
         print(request.POST)  # Print the POST data
-        user = django.contrib.auth.authenticate(request, username=username, password=password)
-        status = request.user.is_authenticated
-        print(user)  
-        if status is True:
+        user = (request.POST)
+        #make a variable "status" that checks if the user is authenticated
+        status = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password)
+        
+        print(user)
+        print(status)
+        if status is not None:
             django.contrib.auth.login(request, user)
             print(request.user.is_authenticated)  
             return redirect('/survey')
@@ -38,9 +42,10 @@ def login(request):
 def register(request): 
     #it is grabbing the GET not the POST, 
     if request.method == 'POST':
-        user = User.objects.create_user(username, password)
+        
         username = request.POST['username']
         password = request.POST['password']
+        user = User.objects.create_user(username=username, password=password)
         user.save()
         print(user)
         return redirect('/login')
