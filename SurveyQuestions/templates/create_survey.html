@@ -24,7 +24,8 @@
                 <option value="multiple_choice">Multiple Choice</option>
                 <option value="all_that_apply">All that apply</option>
             </select>
-            <div class="options"></div>
+            <div class="options">
+            </div>
         </div> 
     </div>
     <button type="button" id="addQuestion">Add Question</button>
@@ -47,12 +48,14 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     var newLabel = document.createElement('label');
     newLabel.setAttribute('for', 'question' + (questionCount + 1));
     newLabel.textContent = 'Question ' + (questionCount + 1) + ':';
-    newLabel.setAttribute('onclick', 'editLabel(this)');
     var newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
     newInput.setAttribute('id', 'question' + (questionCount + 1));
     newInput.setAttribute('name', 'questions');
-    var newSelect = document.createElement('select');
+    newDiv.appendChild(newLabel);
+    newDiv.appendChild(newInput);
+    questionsDiv.appendChild(newDiv);
+     var newSelect = document.createElement('select');
     newSelect.setAttribute('name', 'questionTypes');
     newSelect.setAttribute('onchange', 'addOptions(this)');
     var option1 = document.createElement('option');
@@ -67,12 +70,11 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     newSelect.appendChild(option1);
     newSelect.appendChild(option2);
     newSelect.appendChild(option3);
-    var newOptionsDiv = document.createElement('div');
-    newOptionsDiv.setAttribute('class', 'options');
-    newDiv.appendChild(newLabel);
-    newDiv.appendChild(newInput);
     newDiv.appendChild(newSelect);
+     var newOptionsDiv = document.createElement('div');
+    newOptionsDiv.setAttribute('class', 'options');
     newDiv.appendChild(newOptionsDiv);
+
     questionsDiv.appendChild(newDiv);
 });
 
@@ -90,25 +92,9 @@ function addOptions(select) {
             optionsDiv.appendChild(newLabel);
             optionsDiv.appendChild(newInput);
         }
-    } else if (select.value == 'all_that_apply') {
-        allThatApply(optionsDiv);
-    }
-}
-
-function allThatApply(optionsDiv) {
-    for (var i = 1; i <= 4; i++) {
-        var newLabel = document.createElement('label');
-        newLabel.textContent = 'Option ' + i + ':';
-        newLabel.setAttribute('onclick', 'editLabel(this)');
-        var newInput = document.createElement('input');
-        newInput.setAttribute('type', 'checkbox');
-        newInput.setAttribute('name', 'options');
-        optionsDiv.appendChild(newLabel);
-        optionsDiv.appendChild(newInput);
-    }
-    var addButton = document.createElement('button');
-    addButton.textContent = 'Add Option';
-    addButton.addEventListener('click', function(event) {
+        var addButton = document.createElement('button');
+        addButton.textContent = 'Add Option';
+        addButton.addEventListener('click', function(event) {
         event.preventDefault();
         var newLabel = document.createElement('label');
         newLabel.textContent = 'Option ' + (optionsDiv.getElementsByTagName('input').length + 1) + ':';
@@ -120,7 +106,73 @@ function allThatApply(optionsDiv) {
         optionsDiv.appendChild(newInput);
     });
     optionsDiv.appendChild(addButton);
+
+    var removeButton = document.createElement('button');
+    removeButton.textContent = 'Remove Option';
+    removeButton.addEventListener('click', function(event) {
+        event.preventDefault();
+    var inputs = optionsDiv.getElementsByTagName('input');
+    if (inputs.length > 0) {
+        optionsDiv.removeChild(inputs[inputs.length - 1].previousSibling);  
+        optionsDiv.removeChild(inputs[inputs.length - 1]);  
+    }
+    });
+    optionsDiv.appendChild(removeButton);
+        }
+    else if (select.value == 'all_that_apply') {
+        allThatApply(optionsDiv);
+    }
 }
+
+
+
+
+function allThatApply(optionsDiv) {
+    for (var i = 1; i <= 4; i++) {
+        var optionDiv = document.createElement('div');
+        var newLabel = document.createElement('label');
+        newLabel.textContent = 'Option ' + i + ':';
+        newLabel.setAttribute('onclick', 'editLabel(this)');
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'checkbox');
+        newInput.setAttribute('name', 'options');
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove Option';
+        removeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            optionsDiv.removeChild(optionDiv);
+        });
+        optionDiv.appendChild(newLabel);
+        optionDiv.appendChild(newInput);
+        optionDiv.appendChild(removeButton);
+        optionsDiv.appendChild(optionDiv);
+    }
+    var addButton = document.createElement('button');
+    addButton.textContent = 'Add Option';
+    addButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        var optionDiv = document.createElement('div');
+        var newLabel = document.createElement('label');
+        newLabel.textContent = 'Option ' + (optionsDiv.getElementsByTagName('input').length + 1) + ':';
+        newLabel.setAttribute('onclick', 'editLabel(this)');
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'checkbox');
+        newInput.setAttribute('name', 'options');
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove Option';
+        removeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            optionsDiv.removeChild(optionDiv);
+        });
+        optionDiv.appendChild(newLabel);
+        optionDiv.appendChild(newInput);
+        optionDiv.appendChild(removeButton);
+        optionsDiv.appendChild(optionDiv);
+    });
+    optionsDiv.appendChild(addButton);
+}
+
+
 
 function editLabel(label) {
     var newText = prompt('Enter new text for the label:');

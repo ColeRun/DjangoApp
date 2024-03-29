@@ -14,17 +14,19 @@ def createsurvey(request):
         survey = Survey(title=request.POST['title'], user=request.user)
         survey.save()
         print("survey created")
-        for question_text in request.POST.getlist('questions'):
+        questions = request.POST.getlist('questions')
+        for i in range(len(questions)):
+            question_text = questions[i]
             question = Question(text=question_text, survey=survey)
             question.save()
             print("question created")
-            for answer_text in request.POST.getlist('answers'):
+            answers = request.POST.getlist('answers-' + str(i+1))
+            for answer_text in answers:
                 answer = Answer(text=answer_text, question=question)
                 answer.save()
                 print("answer created")
         return survey_detail(request, survey.pk)
-    else:
-        return render(request, 'create_survey.html')
+    return render(request, 'create_survey.html')
 
 def survey_detail(request, pk):
     try:
@@ -34,4 +36,3 @@ def survey_detail(request, pk):
     except Survey.DoesNotExist:
         return render(request, 'survey_not_found.html')
     
-    #recreate create survey template to be able to take variables "questions", "answers" and "survey" if user clicks edit survey.

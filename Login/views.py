@@ -23,10 +23,11 @@ def login(request):
 
         print(request.POST)  # Print the POST data
         user = django.contrib.auth.authenticate(request, username=username, password=password)
-        print(user)  # Print the User object
-        if user is not None:
+        status = request.user.is_authenticated
+        print(user)  
+        if status is True:
             django.contrib.auth.login(request, user)
-            print(request.user.is_authenticated)  # Check if the user is logged in
+            print(request.user.is_authenticated)  
             return redirect('/survey')
         else:
             message = 'Username or password is incorrect'
