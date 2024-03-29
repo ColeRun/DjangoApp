@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from .models import Survey, Question, Answer
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 #call survey template one
+
 def index(request):
     return render(request, 'home1.html')
 
+@login_required
 def createsurvey(request):
     if request.method == 'POST':
         survey = Survey(title=request.POST['title'], user=request.user)
@@ -22,7 +25,6 @@ def createsurvey(request):
         return survey_detail(request, survey.pk)
     else:
         return render(request, 'create_survey.html')
-
 
 def survey_detail(request, pk):
     try:

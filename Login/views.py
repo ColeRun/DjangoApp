@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import django.contrib.auth.views
+from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
@@ -13,11 +14,13 @@ import django.contrib.auth.models
 
 
  #create logic that if register is clicked it will redirect to register page
-    
+
 def login(request):
+    #we need to use something like post.contain because the whole post is a lot more than just the username and password
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+
         print(request.POST)  # Print the POST data
         user = django.contrib.auth.authenticate(request, username=username, password=password)
         print(user)  # Print the User object
@@ -31,11 +34,12 @@ def login(request):
     else:
         return render(request, 'LoginPrompt.html')
 
-def register(request):
+def register(request): 
+    #it is grabbing the GET not the POST, 
     if request.method == 'POST':
+        user = User.objects.create_user(username, password)
         username = request.POST['username']
         password = request.POST['password']
-        user = User.objects.create_user(username, password)
         user.save()
         print(user)
         return redirect('/login')
