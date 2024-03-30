@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import django.contrib.auth.views
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Group
+
 
 
 # Create your views here.
@@ -23,7 +25,6 @@ def login_view(request):
 
         print(request.POST)  # Print the POST data
         user = (request.POST)
-        #make a variable "status" that checks if the user is authenticated
         status = authenticate(request, username=username, password=password)
         user = authenticate(request, username=username, password=password)
         
@@ -48,6 +49,8 @@ def register(request):
         user = User.objects.create_user(username=username, password=password)
         user.save()
         print(user)
+        group = Group.objects.get(name='Surveyor')
+        group.user_set.add(user)
         return redirect('/login')
     else:
         return render(request, 'NewLogin.html')
