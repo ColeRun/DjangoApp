@@ -28,11 +28,17 @@ def createsurvey(request):
         return survey_detail(request, survey.pk)
     return render(request, 'create_survey.html')
 
+@login_required
 def survey_detail(request, pk):
     try:
         survey = Survey.objects.get(pk=pk)
-        questions = Question.objects.filter(survey=survey)
+        questions = Question.objects.filter(survey=survey).prefetch_related('answer_set')
         return render(request, 'survey_detail.html', {'survey': survey, 'questions': questions})
     except Survey.DoesNotExist:
         return render(request, 'survey_not_found.html')
     
+
+@login_required    
+def user_surveys(request):
+    surveys = Survey.objects.filter(user=request.user)
+    return render(request, 'user_surveys.html', {'surveys': surveys})    
