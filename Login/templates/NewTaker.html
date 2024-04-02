@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Login</title>
+</head>
+<body>
+    <h1>Create New Login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="text" id="survey_title" name="survey_title" required><br><br>
+        <!--value being submit was being stubborn so create login should work!-->
+        <input type="submit" value="Create Login">
+    </form>
+</body>
+</html>

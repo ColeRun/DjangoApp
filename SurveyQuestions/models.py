@@ -7,8 +7,14 @@ class Survey(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Question(models.Model):
+    TYPE_CHOICES = (
+        ('text', 'Text'),
+        ('radio', 'Radio'),
+        ('checkbox', 'Checkbox'),
+    )
     text = models.CharField(max_length=200)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    type = models.CharField(max_length=8, choices=TYPE_CHOICES)
 
 class Answer(models.Model):
     text = models.CharField(max_length=200)

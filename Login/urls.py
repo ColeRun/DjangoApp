@@ -5,6 +5,9 @@ import django.contrib.auth.urls
 
 urlpatterns = [
    
-    path('', views.login_view, name='login'),
+    path('', views.choose, name='choose'),
+    path('surveyorlogin/', views.login_view, name='login'),
     path('register/', views.register, name='register'),
+    path('takerlogin/', views.takerlogin, name='takerlogin'),
+    path('takerregister/', views.takerregister, name='takerregister'),
 ]
