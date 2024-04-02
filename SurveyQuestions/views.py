@@ -25,7 +25,7 @@ def createsurvey(request):
                 answer = Answer(text=answer_text, question=question)
                 answer.save()
                 print("answer created")
-        return survey_detail(request, survey.pk)
+        return createdsurvey(request, survey.pk)
     return render(request, 'create_survey.html')
 
 @login_required
@@ -38,7 +38,7 @@ def survey_detail(request, pk):
         return render(request, 'survey_not_found.html')
     
 
-@login_required    
+    
 def user_surveys(request):
     surveys = Survey.objects.filter(user=request.user)
     return render(request, 'user_surveys.html', {'surveys': surveys})    
@@ -51,3 +51,7 @@ def editsurvey(request, pk):
         return render(request, 'edit_survey.html', {'survey': survey, 'questions': questions})
     except Survey.DoesNotExist:
         return render(request, 'survey_not_found.html')
+
+@login_required
+def createdsurvey(request, pk):
+    return render(request, 'create_survey.html')
