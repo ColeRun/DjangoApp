@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Surveys</title>
+</head>
+<body>
+    <h2>My Surveys</h2>
+    <ul>
+        {% for survey in surveys %}
+            <li>
+                <!-- Modify the href to point to the create_survey view -->
+                <a href="{% url 'edit_survey' survey.id %}">{{ survey.title }}</a>
+            </li>
+        {% empty %}
+            <li>No surveys found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

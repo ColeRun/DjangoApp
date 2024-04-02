@@ -42,3 +42,12 @@ def survey_detail(request, pk):
 def user_surveys(request):
     surveys = Survey.objects.filter(user=request.user)
     return render(request, 'user_surveys.html', {'surveys': surveys})    
+
+@login_required
+def editsurvey(request, pk):
+    try:
+        survey = Survey.objects.get(pk=pk)
+        questions = Question.objects.filter(survey=survey).prefetch_related('answer_set')
+        return render(request, 'edit_survey.html', {'survey': survey, 'questions': questions})
+    except Survey.DoesNotExist:
+        return render(request, 'survey_not_found.html')
