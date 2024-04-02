@@ -54,4 +54,5 @@ def editsurvey(request, pk):
 
 @login_required
 def createdsurvey(request, pk):
-    return render(request, 'create_survey.html')
+    surveys = Survey.objects.filter(user=request.user)
+    return render(request, 'created_surveys.html', {'surveys': surveys})
