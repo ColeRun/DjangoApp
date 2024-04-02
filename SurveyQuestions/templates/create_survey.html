@@ -1,15 +1,23 @@
 <style>
-        body {
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: #333;
-        }
-        label {
-            color: #666;
-        }
-       
+        <style>
+            body {
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+            }
+            h1 {
+                color: #333;
+            }
+            label {
+                color: #666;
+            }
+            .banner {
+                background-color: darkred;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+            }
     </style>
 <form id="surveyForm" method="post">
     {% csrf_token %}
@@ -180,4 +188,24 @@ function editLabel(label) {
         label.textContent = newText;
     }
 }
+document.getElementById('surveyForm').addEventListener('submit', function(event) {
+
+    var survey = {
+        title: document.getElementById('title').value,
+        questions: []
+    };
+
+    var questionDivs = document.getElementById('questions').children;
+
+    for (var i = 0; i < questionDivs.length; i++) {
+        var questionDiv = questionDivs[i];
+        var question = {
+            text: questionDiv.querySelector('input[type="text"]').value,
+            type: questionDiv.querySelector('select').value
+        };
+        survey.questions.push(question);
+    }
+
+    console.log(survey);
+});
 </script>
