@@ -19,3 +19,7 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.CharField(max_length=200)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+class Option(models.Model):
+    text = models.CharField(max_length=200)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)

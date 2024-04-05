@@ -1,17 +1,11 @@
-
-
-{% block content %}
-  <h1>{{ survey.title }}</h1>
-
-  <ul>
-    {% for question in questions %}
-      <li>{{ question.text }}</li>
-      {% for answer in question.answer_set.all %}
-        <p>{{ answer.text }}</p>
-      {% endfor %}
+{% for survey in surveys %}
+    <a href="{% url 'survey_detail' survey.id %}">{{ survey.title }}</a><br>
+    {% for question in survey.question_set.all %}
+        <p>{{ question.text }}</p>
+        {% if question.type != 'text' %}
+            {% for option in question.option_set.all %}
+                <p>{{ option.text }}</p>
+            {% endfor %}
+        {% endif %}
     {% endfor %}
-  </ul>
-
-  <button>Edit Survey</button>
-
-{% endblock %}
+{% endfor %}

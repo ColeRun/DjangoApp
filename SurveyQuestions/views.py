@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .models import Survey, Question, Answer
+from django.shortcuts import get_object_or_404, render
+from .models import Survey, Question, Answer, Option
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -11,36 +11,31 @@ def index(request):
 @login_required
 def createsurvey(request):
     if request.method == 'POST':
+        title = request.POST.get('title')
+        questions = request.POST.getlist('questions')
+        question_types = request.POST.getlist('questionTypes')
+        options = request.POST.getlist('options')
         survey = Survey(title=request.POST['title'], user=request.user)
         survey.save()
         print("survey created")
-        questions = request.POST.getlist('questions')
+       
         for i in range(len(questions)):
-            question_text = questions[i]
-            question = Question(text=question_text, survey=survey)
-            question.save()
-            print("question created")
-            answers = request.POST.getlist('answers-' + str(i+1))
-            for answer_text in answers:
-                answer = Answer(text=answer_text, question=question)
-                answer.save()
-                print("answer created")
+            question = Question.objects.create(text=questions[i], type=question_types[i], survey=survey)
+            if question_types[i] != 'text':
+                for j in range(len(options)):
+                    Option.objects.create(text=options[j], question=question)
         return createdsurvey(request, survey.pk)
     return render(request, 'create_survey.html')
 
-@login_required
+
 def survey_detail(request, pk):
-    try:
-        survey = Survey.objects.get(pk=pk)
-        questions = Question.objects.filter(survey=survey).prefetch_related('answer_set')
-        return render(request, 'survey_detail.html', {'survey': survey, 'questions': questions})
-    except Survey.DoesNotExist:
-        return render(request, 'survey_not_found.html')
+    survey = get_object_or_404(Survey, pk=pk)
+    return render(request, 'survey_detail.html', {'survey': survey})
     
 
     
 def user_surveys(request):
-    surveys = Survey.objects.filter(user=request.user)
+    surveys = Survey.objects.all()
     return render(request, 'user_surveys.html', {'surveys': surveys})    
 
 @login_required
