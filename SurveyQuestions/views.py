@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from .models import Survey, Question, Answer, Option
+from .models import Survey, Question, Option
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
