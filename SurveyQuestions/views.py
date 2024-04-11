@@ -22,11 +22,16 @@ def createsurvey(request):
         for i in range(len(questions)):
             question = Question.objects.create(text=questions[i], type=question_types[i], survey=survey)
             if question_types[i] != 'text':
-                option_list = options[i].split(',')
-                for option_text in option_list:
-                    Option.objects.create(text=option_text, question=question)
+                if i < len(options):
+                    option_list = options[i].split(',')
+                    for option_text in option_list:
+                        Option.objects.create(text=option_text, question=question)
+                else:
+                    print(f"No options provided for question {i+1}")
         return createdsurvey(request, survey.pk)
     return render(request, 'create_survey.html')
+#Recreate edit_survey to take arguments Survey,Questions,Type, and options so that it can be called in the createsurvey function
+#add proper responses to the function
 
 
 def survey_detail(request, pk):
@@ -39,11 +44,23 @@ def survey_detail(request, pk):
             print("Option: ", option.text)
     return render(request, 'survey_detail.html', {'survey': survey})
     
-
+def take_survey(request, pk):
+    survey = get_object_or_404(Survey, pk=pk)
+    questions = survey.question_set.all()
+    for question in questions:
+        print("Question: ", question.text)
+        options = question.option_set.all()
+        for option in options:
+            print("Option: ", option.text)
+    return render(request, 'take_survey.html', {'survey': survey, 'questions': questions})
     
 def user_surveys(request):
-    surveys = Survey.objects.all()
+    surveys = Survey.objects.filter(user=request.user)
     return render(request, 'user_surveys.html', {'surveys': surveys})    
+
+def all_surveys(request):
+    surveys = Survey.objects.all()
+    return render(request, 'user_surveys.html', {'surveys': surveys})
 
 @login_required
 def editsurvey(request, pk):
