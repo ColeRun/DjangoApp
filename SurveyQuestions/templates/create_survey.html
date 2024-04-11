@@ -1,5 +1,24 @@
 <style>
-        <style>
+
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            color: #666;
+        }
+        .banner {
+            background-color: darkred;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        </style>
             body {
                 background-color: #f0f0f0;
                 font-family: Arial, sans-serif;
@@ -60,11 +79,12 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     var newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
     newInput.setAttribute('id', 'question' + (questionCount + 1));
-    newInput.setAttribute('name', 'questions');
-    newDiv.appendChild(newLabel);
+    newInput.setAttribute('name', 'questions' + questionCount);
+    newDiv.appendChild(newLabel); 
     newDiv.appendChild(newInput);
     questionsDiv.appendChild(newDiv);
      var newSelect = document.createElement('select');
+     newSelect.setAttribute('name', 'questionTypes' + questionCount);
     newSelect.setAttribute('name', 'questionTypes');
     newSelect.setAttribute('onchange', 'addOptions(this)');
     var option1 = document.createElement('option');

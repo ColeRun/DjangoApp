@@ -15,15 +15,13 @@ import django.contrib.auth.models
 
 
 
- #create logic that if register is clicked it will redirect to register page
 
 def login_view(request):
-    #we need to use something like post.contain because the whole post is a lot more than just the username and password
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
-        print(request.POST)  # Print the POST data
+        print(request.POST) 
         user = (request.POST)
         status = authenticate(request, username=username, password=password)
         user = authenticate(request, username=username, password=password)
