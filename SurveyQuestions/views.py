@@ -22,14 +22,21 @@ def createsurvey(request):
         for i in range(len(questions)):
             question = Question.objects.create(text=questions[i], type=question_types[i], survey=survey)
             if question_types[i] != 'text':
-                for j in range(len(options)):
-                    Option.objects.create(text=options[j], question=question)
+                option_list = options[i].split(',')
+                for option_text in option_list:
+                    Option.objects.create(text=option_text, question=question)
         return createdsurvey(request, survey.pk)
     return render(request, 'create_survey.html')
 
 
 def survey_detail(request, pk):
     survey = get_object_or_404(Survey, pk=pk)
+    questions = survey.question_set.all()
+    for question in questions:
+        print("Question: ", question.text)
+        options = question.option_set.all()
+        for option in options:
+            print("Option: ", option.text)
     return render(request, 'survey_detail.html', {'survey': survey})
     
 

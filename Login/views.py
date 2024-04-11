@@ -33,7 +33,7 @@ def login_view(request):
         if status is not None:
             django.contrib.auth.login(request, user)
             print(request.user.is_authenticated)  
-            return redirect('/survey')
+            return redirect('/survey/user_surveys')
         else:
             message = 'Username or password is incorrect'
             return render(request, 'LoginPrompt.html', {'message': message})
@@ -68,11 +68,11 @@ def takerlogin(request):
         user = authenticate(request, username=username, password=password)
         
         print(user)
-        print(status)
+       
         if user is not None:
             django.contrib.auth.login(request, user)
             print(request.user.is_authenticated)  
-            return redirect('/user_surveys')
+            return redirect('/survey/user_surveys')
         else:
             message = 'Username or password is incorrect'
             return render(request, 'TakerLogin.html', {'message': message})
@@ -92,7 +92,7 @@ def takerregister(request):
         group.user_set.add(user)
         return redirect('/takerlogin')
     else:
-        return render(request, 'TakerRegister.html')
+        return render(request, 'NewTaker.html')
     
 def choose(request):
     return render(request, 'Choose.html')
