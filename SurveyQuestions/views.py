@@ -21,11 +21,14 @@ def createsurvey(request):
        
         for i in range(len(questions)):
             question = Question.objects.create(text=questions[i], type=question_types[i], survey=survey)
+            print(f"Question {i+1} created")
             if question_types[i] != 'text':
                 if i < len(options):
                     option_list = options[i].split(',')
+                    print(f"Options for question {i+1}: {option_list}")
                     for option_text in option_list:
                         Option.objects.create(text=option_text, question=question)
+                        print(f"Option {option_text} created")
                 else:
                     print(f"No options provided for question {i+1}")
         return createdsurvey(request, survey.pk)
