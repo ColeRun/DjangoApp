@@ -18,3 +18,7 @@ class Question(models.Model):
 class Option(models.Model):
         text = models.CharField(max_length=200)
         question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.TextField()

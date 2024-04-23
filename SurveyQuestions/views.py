@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Survey, Question, Option
+from .models import Survey, Question, Option, Answer
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -68,10 +68,19 @@ def survey_detail(request, pk):
     }
     return render(request, 'survey_detail.html', context)
 
-def take_survey(request, pk):
-    survey = get_object_or_404(Survey, pk=pk)
-    questions = survey.questions.all()
-    print("Survey: ", survey.title)
+def take_survey(request, survey_id):
+    if request.method == 'POST':
+        survey = Survey.objects.get(id=survey_id)
+        for question in survey.questions.all():
+            answer = Answer()
+            answer.question = question
+            answer.text = request.POST['question_' + str(question.id)]
+            answer.save()
+        return redirect('review.html', survey_id=survey_id)
+    else:
+        survey = get_object_or_404(Survey, pk=survey_id)
+        questions = survey.questions.all()
+        print("Survey: ", survey.title)
     print("Questions: ")
     for question in questions:
         options = question.options.all()
@@ -105,3 +114,13 @@ def editsurvey(request, pk):
 def createdsurvey(request, pk):
     surveys = Survey.objects.filter(user=request.user)
     return render(request, 'created_surveys.html', {'surveys': surveys})
+
+@login_required
+def review(request, survey_id):
+    answers = Answer.objects.filter(question__survey__id=survey_id)
+    return render(request, 'review.html', {'answers': answers})
+
+def taker_survey_view(request):
+    surveys = Survey.objects.filter(user=request.user)
+    redirect('taker_survey_view')
+    return render(request, 'taker_survey_view.html', {'surveys': surveys})    

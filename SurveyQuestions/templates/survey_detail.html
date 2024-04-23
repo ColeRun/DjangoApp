@@ -1,3 +1,18 @@
+ <style>
+        body {
+            background-color: lightgrey;
+            font-family: "Times New Roman", Times, serif;
+        }
+        .banner {
+            background-color: darkred;
+            height: 50px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <div class="banner"></div>
 
     <a href="{% url 'survey_detail' survey.id %}">{{ survey.title }}</a><br>
 {% block content %}

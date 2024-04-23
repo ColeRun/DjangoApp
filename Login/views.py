@@ -70,7 +70,7 @@ def takerlogin(request):
         if user is not None:
             django.contrib.auth.login(request, user)
             print(request.user.is_authenticated)  
-            return redirect('/survey/user_surveys')
+            return redirect('/survey/taker_survey_view')
         else:
             message = 'Username or password is incorrect'
             return render(request, 'TakerLogin.html', {'message': message})
