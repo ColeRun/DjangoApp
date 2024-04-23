@@ -46,7 +46,7 @@
         <div class="question">
             <label for="question1">Question 1:</label>
             <input type="text" id="question1" name="questions">
-            <select name="questionTypes" onchange="addOptions(this)">
+            <select name="questionTypes" onchange="addOptions(this, 1)">
                 <option value="text">Text</option>
                 <option value="multiple_choice">Multiple Choice</option>
                 <option value="all_that_apply">All that apply</option>
@@ -71,15 +71,16 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     event.preventDefault();
     var questionsDiv = document.getElementById('questions');
     var questionCount = questionsDiv.getElementsByClassName('question').length;
+    var questionNum = questionCount + 1;
     var newDiv = document.createElement('div');
     newDiv.setAttribute('class', 'question');
     var newLabel = document.createElement('label');
-    newLabel.setAttribute('for', 'question' + (questionCount + 1));
-    newLabel.textContent = 'Question ' + (questionCount + 1) + ':';
+    newLabel.setAttribute('for', 'question' + (questionNum));
+    newLabel.textContent = 'Question ' + (questionNum) + ':';
     var newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
-    newInput.setAttribute('id', 'question' + (questionCount + 1));
-    newInput.setAttribute('name', 'questions' + questionCount);
+    newInput.setAttribute('id', 'question' + (questionNum));
+    newInput.setAttribute('name', 'questions' + questionNum);
     newDiv.appendChild(newLabel); 
     newDiv.appendChild(newInput);
     questionsDiv.appendChild(newDiv);
@@ -107,7 +108,7 @@ document.getElementById('addQuestion').addEventListener('click', function(event)
     questionsDiv.appendChild(newDiv);
 });
 
-function addOptions(select) {
+function addOptions(select, questionNum) {
     var optionsDiv = select.parentNode.getElementsByClassName('options')[0];
     optionsDiv.innerHTML = '';
     if (select.value == 'multiple_choice') {
@@ -117,20 +118,22 @@ function addOptions(select) {
             newLabel.setAttribute('onclick', 'editLabel(this)');
             var newInput = document.createElement('input');
             newInput.setAttribute('type', 'radio');
-            newInput.setAttribute('name', 'options');
+            newInput.setAttribute('name', 'question_' + questionNum + '_option_' + i);
             optionsDiv.appendChild(newLabel);
             optionsDiv.appendChild(newInput);
         }
+        var optionNum = 3;
         var addButton = document.createElement('button');
         addButton.textContent = 'Add Option';
         addButton.addEventListener('click', function(event) {
         event.preventDefault();
+        optionNum++;
         var newLabel = document.createElement('label');
         newLabel.textContent = 'Option ' + (optionsDiv.getElementsByTagName('input').length + 1) + ':';
         newLabel.setAttribute('onclick', 'editLabel(this)');
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'checkbox');
-        newInput.setAttribute('name', 'options');
+        newInput.setAttribute('name', 'question_' + questionNum + '_options_' + optionNum);
         optionsDiv.appendChild(newLabel);
         optionsDiv.appendChild(newInput);
     });
@@ -149,33 +152,28 @@ function addOptions(select) {
     optionsDiv.appendChild(removeButton);
         }
     else if (select.value == 'all_that_apply') {
-        allThatApply(optionsDiv);
+        allThatApply(optionsDiv, questionNum);
     }
 }
 
 
 
 
-function allThatApply(optionsDiv) {
-    for (var i = 1; i <= 4; i++) {
+function allThatApply(optionsDiv, questionNum) {
+    for (var i = 1; i <= 1; i++) {
         var optionDiv = document.createElement('div');
         var newLabel = document.createElement('label');
         newLabel.textContent = 'Option ' + i + ':';
         newLabel.setAttribute('onclick', 'editLabel(this)');
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'checkbox');
-        newInput.setAttribute('name', 'options');
+        newInput.setAttribute('name', 'question_' + questionNum + '_option_' + i);
         var removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove Option';
-        removeButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            optionsDiv.removeChild(optionDiv);
-        });
         optionDiv.appendChild(newLabel);
         optionDiv.appendChild(newInput);
-        optionDiv.appendChild(removeButton);
         optionsDiv.appendChild(optionDiv);
     }
+    optionNum = 1;
     var addButton = document.createElement('button');
     addButton.textContent = 'Add Option';
     addButton.addEventListener('click', function(event) {
@@ -186,7 +184,8 @@ function allThatApply(optionsDiv) {
         newLabel.setAttribute('onclick', 'editLabel(this)');
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'checkbox');
-        newInput.setAttribute('name', 'options');
+        newInput.setAttribute('name', 'question_' + questionNum + '_option_' +  optionNum + 1);
+        optionNum++;
         var removeButton = document.createElement('button');
         removeButton.textContent = 'Remove Option';
         removeButton.addEventListener('click', function(event) {
