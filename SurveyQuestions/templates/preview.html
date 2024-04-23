@@ -1,0 +1,14 @@
+<h1>{{ survey.title }}</h1>
+
+{% for question in questions %}
+    <h2>{{ question.text }}</h2>
+    <h3>Type: {{ question.get_type_display }}</h3>
+    {% if question.type != 'text' %}
+        <h3>Options:</h3>
+        <ul>
+        {% for option in question.options.all %}
+            <li>{{ option.text }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endfor %}

@@ -5,10 +5,10 @@
 
   <form method="post">
     {% csrf_token %}
-    {% for question in survey.question_set.all %}
+    {% for question in questions %}
       <p>{{ question.text }}</p>
       {% if question.type != 'text' %}
-        {% for option in question.option_set.all %}
+        {% for option in question.options.all %}
           <input type="{{ question.type }}" name="question_{{ question.id }}" value="{{ option.id }}">
           <label>{{ option.text }}</label><br>
         {% endfor %}
@@ -18,5 +18,4 @@
     {% endfor %}
     <input type="submit" value="Submit Survey">
   </form>
-
 {% endblock %}

@@ -1,22 +1,25 @@
-
-    <a href="{% url 'survey_detail' survey.id %}">{{ survey.title }}</a><br>
-{% block content %}
-  <h1>{{ survey.title }}</h1>
-
-  <form method="post">
+<form method="POST">
     {% csrf_token %}
-    {% for question in survey.question_set.all %}
-      <p>{{ question.text }}</p>
-      {% if question.type != 'text' %}
-        {% for option in question.option_set.all %}
-          <input type="{{ question.type }}" name="question_{{ question.id }}" value="{{ option.id }}">
-          <label>{{ option.text }}</label><br>
-        {% endfor %}
-      {% else %}
-        <input type="text" name="question_{{ question.id }}"><br>
-      {% endif %}
+    {% for question in survey.questions.all %}
+        <div class="question">
+            <label for="question_{{ question.id }}">{{ question.text }}</label>
+            <label type="text"> Please answer honestly to your best ability!</label>
+            {% if question.type == 'multiple_choice' %}
+                {% for option in question.options.all %}
+                    <div class="option">
+                        <input type="radio" id="option_{{ option.id }}" name="question_{{ question.id }}" value="{{ option.id }}">
+                        <label for="option_{{ option.id }}">{{ option.text }}</label>
+                    </div>
+                {% endfor %}
+            {% elif question.type == 'all_that_apply' %}
+                {% for option in question.options.all %}
+                    <div class="option">
+                        <input type="checkbox" id="option_{{ option.id }}" name="question_{{ question.id }}" value="{{ option.id }}">
+                        <label for="option_{{ option.id }}">{{ option.text }}</label>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     {% endfor %}
-    <input type="submit" value="Submit Survey">
-  </form>
-
-{% endblock %}
+    <input type="submit" value="Submit">
+</form>

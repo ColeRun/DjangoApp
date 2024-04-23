@@ -20,14 +20,9 @@
 </style>
 
 {% for survey in surveys %}
-    <a href="{% url 'survey_detail' survey.id %}">{{ survey.title }}</a><br>
+    <a href="{% url 'take_survey' survey.id %}">{{ survey.title }}</a><br>
     {% for question in survey.question_set.all %}
         <p>{{ question.text }}</p>
-        {% if question.type != 'text' %}
-            {% for option in question.option_set.all %}
-                <p>{{ option.text }}</p>
-            {% endfor %}
-        {% endif %}
     {% endfor %}
 {% endfor %}
 <!-- add a button that redirects to creat_survey-->
